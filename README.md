@@ -5,7 +5,6 @@
 ## Video Presentation
 
 > [![Video Presentation](https://img.shields.io/badge/YouTube-Video%20Presentation-red?logo=youtube)](https://youtu.be/auRB4NsH1ss)  
-> *(Update this link after uploading your video)*
 
 ## Dataset
 
