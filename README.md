@@ -4,7 +4,8 @@
 
 ## Video Presentation
 
-> [![Video Presentation](https://img.shields.io/badge/YouTube-Video%20Presentation-red?logo=youtube)](https://youtu.be/auRB4NsH1ss)  
+> [![Video Presentation](https://img.shields.io/badge/YouTube-Video%20Presentation-red?logo=youtube)](https://youtu.be/YOUTUBE_LINK_HERE)  
+> *(Update this link after uploading your video)*
 
 ## Dataset
 
@@ -61,7 +62,7 @@ python -m src.xai                    # SHAP analysis
 
 **Baseline Performance Evaluation**
 
-&nbsp;&nbsp;&nbsp;&nbsp;In Known Attack evaluation, all supervised models showed high performance. RF was the best with F1 of 0.9983, followed by LSTM at 0.9919 and MLP at 0.9635. AE recorded a relatively low F1 of 0.5520, as it does not learn attack patterns directly but judges based on deviation from normality. In Unknown Attack evaluation, performance dropped sharply for all models. RF Recall was 0.2999, MLP 0.0362, LSTM 0.0221, and AE 0.0422, with AE recording the lowest Recall. This supports H1 (sharp performance drop of supervised models on Unknown attacks), but H2 (AE superiority in Unknown detection) was rejected.
+&nbsp;&nbsp;&nbsp;&nbsp;In Known Attack evaluation, all supervised models showed high performance. RF was the best with F1 of 0.9983, followed by LSTM at 0.9919 and MLP at 0.9635. AE recorded a relatively low F1 of 0.5520, as it does not learn attack patterns directly but judges based on deviation from normality. In Unknown Attack evaluation, performance dropped sharply for all models. RF Recall was 0.2999, MLP 0.0362, LSTM 0.0221, and AE 0.0422. Although AE's Recall (0.0422) was higher than LSTM (0.0221) and MLP (0.0362), AE recorded the lowest F1 (0.0164) due to extremely low Precision (0.0102). This supports H1 (sharp performance drop of supervised models on Unknown attacks), but H2 (AE superiority in Unknown detection) was rejected.
 
 | Model | Known F1 | Unknown Recall | Unknown Precision | Unknown F1 | Unknown ROC-AUC |
 |-------|----------|----------------|-------------------|------------|-----------------|
@@ -82,7 +83,7 @@ python -m src.xai                    # SHAP analysis
 
 ![Figure 2. Known Attack ROC Curves.](results/roc_curves_known.png)
 
-&nbsp;&nbsp;&nbsp;&nbsp;Analysis of the reconstruction error distribution revealed that the median error for BENIGN was 0.00075 and for Unknown Attack was 0.00289, with the two distributions almost entirely overlapping (Figure 3). Known Attack had a median of 0.01007, more than 13 times higher than BENIGN, enabling clear separation by the threshold, whereas most Unknown Attacks fall below the threshold (0.0298). t-SNE visualization of the AE latent space (Figure 4) also showed that Known Attacks (orange) formed distinct regions, while Unknown Attacks (pink) were intermingled with BENIGN (green).
+&nbsp;&nbsp;&nbsp;&nbsp;Analysis of the reconstruction error distribution revealed that the median error for BENIGN was 0.00075 and for Unknown Attack was 0.00289, with the two distributions almost entirely overlapping (Figure 3). Known Attack had a median of 0.01007, more than 13 times higher than BENIGN, enabling clear separation by the threshold, whereas most Unknown Attacks fall below the threshold (0.02981). t-SNE visualization of the AE latent space (Figure 4) also showed that Known Attacks (orange) formed distinct regions, while Unknown Attacks (pink) were intermingled with BENIGN (green).
 
 ![Figure 3. AE reconstruction error distribution.](results/ae_error_distribution_detail.png)
 
@@ -140,7 +141,7 @@ python -m src.xai                    # SHAP analysis
 
 &nbsp;&nbsp;&nbsp;&nbsp;This study verified the potential of Autoencoders for detecting Unknown Attacks using 78 flow statistical features from CICIDS2017 through diverse experiments, and quantitatively analyzed the mechanisms of detection failure. The main conclusions are as follows.
 
-&nbsp;&nbsp;&nbsp;&nbsp;H1 (sharp performance drop of supervised models on Unknown attacks) was supported. All supervised models showed significant performance drops for attack types not seen during training: RF Recall 0.2999, MLP 0.0362, and LSTM 0.0221. H2 (AE superiority in Unknown detection) was rejected. AE's overall Unknown Recall was 0.0422, the lowest among all models. However, as a secondary finding, AE achieved Recall 0.6692 and ROC-AUC 0.9310 on flow-anomalous samples (6.3%), confirming its unique detection capability under that specific condition.
+&nbsp;&nbsp;&nbsp;&nbsp;H1 (sharp performance drop of supervised models on Unknown attacks) was supported. All supervised models showed significant performance drops for attack types not seen during training: RF Recall 0.2999, MLP 0.0362, and LSTM 0.0221. H2 (AE superiority in Unknown detection) was rejected. AE recorded the lowest Unknown F1 (0.0164) among all models due to extremely low Precision (0.0102) and high false positives (17,160 cases, 5.04%). Note that AE's Recall (0.0422) was actually higher than LSTM (0.0221) and MLP (0.0362). However, as a secondary finding, AE achieved Recall 0.6692 and ROC-AUC 0.9310 on flow-anomalous samples (6.3%), confirming its unique detection capability under that specific condition.
 
 &nbsp;&nbsp;&nbsp;&nbsp;The core finding that runs through all experimental results is that the failure of Unknown Attack detection is not a model problem, but a **feature representation problem**. No meaningful information for distinguishing Unknown Attack types was found from the 78 flow statistical features used in this study. Bot, Web Attack, and Infiltration operate through application-layer content such as HTTP payloads and SQL queries, and this information is not reflected in flow statistics. The failure of clustering to separate Unknown Attacks from BENIGN, the generally low SHAP values, and the overlap of AE reconstruction errors with BENIGN all point to the same root cause. However, the possibility that some patterns may be captured through other models such as XGBoost or Transformer, or through feature engineering techniques, cannot be excluded, and this remains a task for future research.
 
